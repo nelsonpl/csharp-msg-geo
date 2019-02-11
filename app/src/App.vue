@@ -29,8 +29,8 @@
           class="hidden-sm-and-down"
         ></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn href="/signup" color="success">Sign up</v-btn>
-         <v-btn href="/signin"  color="info">Sign in</v-btn>
+        <v-btn href="/signup" v-show="!isAuthenticated" color="success">Sign up</v-btn>
+         <v-btn href="/signin"  v-show="!isAuthenticated" color="info">Sign in</v-btn>
          <div v-show="isAuthenticated" >
           <v-btn icon>
             <v-icon>settings</v-icon>
@@ -41,8 +41,8 @@
         </div>
       </v-toolbar>
       <v-content>
-        <v-container fluid fill-height>
-          <v-layout justify-center align-center>
+        <v-container>
+          <v-layout justify-center>
             <router-view></router-view>
           </v-layout>
         </v-container>

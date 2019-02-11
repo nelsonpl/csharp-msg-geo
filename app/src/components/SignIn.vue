@@ -1,38 +1,13 @@
 <template>
-  <div  class="signup">
+  <div class="signup">
     <v-card>
-      <v-container fluid grid-list-lg>
-        <v-layout  row wrap>
-
-           <form>
-    <v-text-field
-      :counter="10"
-      label="Name"
-      data-vv-name="name"
-      required
-    ></v-text-field>
-    <v-text-field
-      label="E-mail"
-      data-vv-name="email"
-      required
-    ></v-text-field>
-    <v-select
-      label="Select"
-      data-vv-name="select"
-      required
-    ></v-select>
-    <v-checkbox
-      value="1"
-      label="Option"
-      data-vv-name="checkbox"
-      type="checkbox"
-      required
-    ></v-checkbox>
-
-    <v-btn>submit</v-btn>
-    <v-btn>clear</v-btn>
-  </form>
-
+      <v-container>
+        <v-layout>
+          <form>
+            <v-text-field label="email" v-model="model.email" required></v-text-field>
+            <v-text-field label="password" type="password" v-model="model.password" required></v-text-field>
+            <v-btn @click="signup()">Sign up</v-btn>
+          </form>
         </v-layout>
       </v-container>
     </v-card>
@@ -41,16 +16,22 @@
 
 <script>
 import api from "@/api/AccountService";
+import Vue from 'vue';
 
 export default {
   name: "signup",
   data() {
     return {
+      model: { email: "", password: "" }
     };
   },
-  async created() {
-  },
-  methods: {}
+  methods: {
+    async signup() {
+       var token = await api.get(this.model.email, this.model.password);
+       Vue.prototype.$auth.setAccessToken(token);
+       this.$router.go("/Messages");
+    }
+  }
 };
 </script>
 

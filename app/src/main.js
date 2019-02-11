@@ -16,6 +16,7 @@ import {
   LGeoJson
 } from 'vue2-leaflet'
 
+
 Vue.component('l-map', LMap);
 Vue.component('l-tile-layer', LTileLayer);
 Vue.component('l-marker', LMarker);
@@ -32,8 +33,18 @@ L.Icon.Default.mergeOptions({
 
 Vue.config.productionTip = false;
 Vue.prototype.$auth = {
-  getAccessToken: async function () { return ""; },
-  isAuthenticated: function () { return false;}
+  setAccessToken: function (token) {
+    localStorage.npxgeomsgtoken = token;
+  },
+  getAccessToken: async function () {
+    if (localStorage.npxgeomsgtoken)
+      return localStorage.npxgeomsgtoken;
+    return "";
+  },
+  isAuthenticated: function () { 
+    var flag = localStorage.npxgeomsgtoken != null && localStorage.npxgeomsgtoken != ""; 
+    return flag;
+  }
 };
 
 /* eslint-disable no-new */

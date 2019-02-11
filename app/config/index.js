@@ -4,6 +4,9 @@
 const path = require('path')
 
 module.exports = {
+  configureWebpack: {
+    devtool: 'source-map'
+  },
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
