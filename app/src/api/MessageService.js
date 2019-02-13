@@ -14,7 +14,7 @@ export default {
       url: resource,
       data,
       headers: {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `${accessToken}`
       }
     }).then(req => {
       return req.data

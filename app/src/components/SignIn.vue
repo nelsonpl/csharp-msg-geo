@@ -1,12 +1,12 @@
 <template>
-  <div class="signup">
+  <div class="signin">
     <v-card>
       <v-container>
         <v-layout>
           <form>
             <v-text-field label="email" v-model="model.email" required></v-text-field>
             <v-text-field label="password" type="password" v-model="model.password" required></v-text-field>
-            <v-btn @click="signup()">Sign up</v-btn>
+            <v-btn @click="signin()">Sign in</v-btn>
           </form>
         </v-layout>
       </v-container>
@@ -19,14 +19,14 @@ import api from "@/api/AccountService";
 import Vue from 'vue';
 
 export default {
-  name: "signup",
+  name: "signin",
   data() {
     return {
       model: { email: "", password: "" }
     };
   },
   methods: {
-    async signup() {
+    async signin() {
        var token = await api.get(this.model.email, this.model.password);
        Vue.prototype.$auth.setAccessToken(token);
        this.$router.go("/Messages");

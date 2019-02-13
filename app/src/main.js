@@ -36,7 +36,7 @@ Vue.prototype.$auth = {
   setAccessToken: function (token) {
     localStorage.npxgeomsgtoken = token;
   },
-  getAccessToken: async function () {
+  getAccessToken: async function () {    
     if (localStorage.npxgeomsgtoken)
       return localStorage.npxgeomsgtoken;
     return "";
