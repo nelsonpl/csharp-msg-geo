@@ -7,3 +7,4 @@
 /app/node_modules
 /app/.babelrc
 /app/.postcssrc.js
+/app/.vscode
