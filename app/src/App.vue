@@ -55,11 +55,7 @@
         </div>
       </v-toolbar>
       <v-content>
-        <v-container>
-          <v-layout justify-center>
-            <router-view></router-view>
-          </v-layout>
-        </v-container>
+        <router-view></router-view>
       </v-content>
     </v-app>
   </div>
