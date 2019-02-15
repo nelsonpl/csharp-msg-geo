@@ -16,7 +16,7 @@
 
 <script>
 import api from "@/api/AccountService";
-import Vue from 'vue';
+import Vue from "vue";
 
 export default {
   name: "signin",
@@ -27,9 +27,11 @@ export default {
   },
   methods: {
     async signin() {
-       var token = await api.get(this.model.email, this.model.password);
-       Vue.prototype.$auth.setAccessToken(token);
-       this.$router.go("/Messages");
+      var token = await api.get(this.model.email, this.model.password);
+      if (token) {
+        Vue.prototype.$auth.setAccessToken(token);
+        this.$router.go("/Messages");
+      }
     }
   }
 };

@@ -1,6 +1,6 @@
-# geomsgapp
+# geomsg.app
 
-> geomsgapp - message geo
+> Plataform GEO Message
 
 ## Build Setup
 

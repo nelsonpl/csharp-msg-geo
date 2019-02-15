@@ -100,7 +100,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     ]),
     // service worker caching
     new SWPrecacheWebpackPlugin({
-      cacheId: 'geomsgapp',
+      cacheId: 'geomsg.app',
       filename: 'service-worker.js',
       staticFileGlobs: ['dist/**/*.{js,html,css}'],
       minify: true,

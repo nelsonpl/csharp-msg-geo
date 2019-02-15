@@ -1,0 +1,9 @@
+/api/.vs
+/api/packages
+/api/geomsg.api/geomsg.api.csproj.user
+/api/geomsg.api/bin
+/api/geomsg.api/obj
+/app/.editorconfig
+/app/node_modules
+/app/.babelrc
+/app/.postcssrc.js

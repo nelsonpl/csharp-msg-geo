@@ -161,6 +161,7 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Controllers\MessageController.cs" />

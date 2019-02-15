@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-navigation-drawer v-show="isAuthenticated" fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="drawer">
+      <v-navigation-drawer
+        v-show="isAuthenticated"
+        fixed
+        :clipped="$vuetify.breakpoint.mdAndUp"
+        app
+        v-model="drawer"
+      >
         <v-list dense>
           <template v-for="item in items">
             <v-list-tile :href="item.href" :key="item.text">
@@ -30,14 +36,22 @@
         ></v-text-field>
         <v-spacer></v-spacer>
         <v-btn href="/signup" v-show="!isAuthenticated" color="success">Sign up</v-btn>
-         <v-btn href="/signin"  v-show="!isAuthenticated" color="info">Sign in</v-btn>
-         <div v-show="isAuthenticated" >
+        <v-btn href="/signin" v-show="!isAuthenticated" color="info">Sign in</v-btn>
+        <div v-show="isAuthenticated">
           <v-btn icon>
             <v-icon>settings</v-icon>
           </v-btn>
-          <v-btn  icon>
-            <v-icon>person</v-icon>
-          </v-btn>
+
+          <v-menu offset-y>
+            <v-btn slot="activator" icon>
+              <v-icon>person</v-icon>
+            </v-btn>
+            <v-list>
+              <v-list-tile @click.prevent="logout()">
+                <v-list-tile-title>Logout</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
         </div>
       </v-toolbar>
       <v-content>
@@ -52,8 +66,8 @@
 </template>
 
 <script>
-
-import Vue from 'vue';
+import Vue from "vue";
+import apiSession from "@/api/SessionService";
 
 export default {
   name: "app",
@@ -62,14 +76,20 @@ export default {
       isAuthenticated: Vue.prototype.$auth.isAuthenticated(),
       drawer: Vue.prototype.$auth.isAuthenticated(),
       items: [
-        { icon: "messages", text: "Messages", href:"/Messages" },
-        { icon: "map", text: "Map", href:"/Map" }
+        { icon: "messages", text: "Messages", href: "/Messages" },
+        { icon: "map", text: "Map", href: "/Map" }
       ]
     };
   },
   methods: {
     login() {},
-    async logout() {}
+    async logout() {
+      await Vue.prototype.$auth.getAccessToken().then(function(token) {
+        apiSession.delete(token);
+      });
+      Vue.prototype.$auth.setAccessToken("");
+      this.$router.go("/SignIn");
+    }
   }
 };
 </script>

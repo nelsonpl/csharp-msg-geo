@@ -19,7 +19,8 @@ export default {
     })
   },
   get(e, p) {
-    return this.execute('get', '/', null, { email: e, password: p }).catch(function (error) {
+    return this.execute('get', '/', null, { email: e, password: p })
+    .catch(function (error) {
       alert(error.message);
     });
   },
