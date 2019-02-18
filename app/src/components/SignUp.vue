@@ -56,10 +56,10 @@ export default {
       password: "Password",
       rules: {
         required: value => !!value || "required",
-        min: v => v.length >= 8 || "Min 8 characters",
+        min: v => v.length >= 8 || "Min 8 characters.",
         confirmPassword: () => {
           if (this.model.password != this.model.confirmPassword)
-            return "The password you entered don't match";
+            return "The password you entered don't match.";
           return "";
         }
       }
@@ -68,7 +68,18 @@ export default {
   async created() {},
   methods: {
     async signup() {
-      await api.create(this.model);
+
+      if(!this.model.email || !this.model.name || !this.model.password || !this.model.confirmPassword){
+        alert("Enter the required fields.");
+        return;
+      }
+
+      if(this.model.password != this.model.confirmPassword){
+        alert("The password you entered don't match.");
+        return;
+      }
+
+      //await api.create(this.model);
       this.$router.go("/Messages");
     }
   }

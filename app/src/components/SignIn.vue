@@ -5,7 +5,7 @@
         <v-flex xs10 offset-xs1>
           <v-card class="elevation-12">
             <v-toolbar dark color="primary">
-              <v-toolbar-title>Sign Up</v-toolbar-title>
+              <v-toolbar-title>Sign In</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <v-form>
