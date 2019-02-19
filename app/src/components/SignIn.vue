@@ -26,7 +26,8 @@
 </template>
 
 <script>
-import api from "@/api/AccountService";
+import api from "@/api/SessionService";
+import apiMaster from "@/App";
 import Vue from "vue";
 
 export default {
@@ -36,12 +37,14 @@ export default {
       model: { email: "", password: "" }
     };
   },
+  created: function() {},
   methods: {
     async signin() {
       var token = await api.get(this.model.email, this.model.password);
       if (token) {
-        Vue.prototype.$auth.setAccessToken(token);
-        this.$router.go("/Messages");
+        Vue.prototype.$auth.startSession(token);
+        apiMaster.reload();
+        this.$router.push("Messages");
       }
     }
   }

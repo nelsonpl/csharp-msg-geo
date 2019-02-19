@@ -18,12 +18,6 @@ export default {
       return req.data
     })
   },
-  get(e, p) {
-    return this.execute('get', '/', null, { email: e, password: p })
-    .catch(function (error) {
-      alert(error.message);
-    });
-  },
   create(data) {
     return this.execute('post', '/', data).catch(function (error) {
       alert(error.message);

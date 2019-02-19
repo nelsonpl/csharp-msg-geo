@@ -18,6 +18,12 @@ export default {
       return req.data
     })
   },
+  get(e, p) {
+    return this.execute('get', '/', null, { email: e, password: p })
+    .catch(function (error) {
+      alert(error.message);
+    });
+  },
   delete(token) {
     return this.execute('delete', '/', null, { 'token': token }).catch(function (error) {
       alert(error.message);

@@ -33,18 +33,23 @@ L.Icon.Default.mergeOptions({
 
 Vue.config.productionTip = false;
 Vue.prototype.$auth = {
-  setAccessToken: function (token) {
+
+  startSession: (token) => {
     localStorage.npxgeomsgtoken = token;
   },
-  getAccessToken: async function () {    
+  getSessionToken: async () => {
     if (localStorage.npxgeomsgtoken)
       return localStorage.npxgeomsgtoken;
     return "";
   },
-  isAuthenticated: function () { 
-    var flag = localStorage.npxgeomsgtoken != null && localStorage.npxgeomsgtoken != ""; 
+  isAuthenticated: () => {
+    var flag = localStorage.npxgeomsgtoken != null && localStorage.npxgeomsgtoken != "";
     return flag;
-  }
+  },
+  endSession: () => {
+    localStorage.npxgeomsgtoken = "";
+    localStorage.clear();
+  },
 };
 
 /* eslint-disable no-new */

@@ -8,7 +8,7 @@ const client = axios.create({
 
 export default {
   async execute(method, resource, data, params) {
-    const accessToken = await Vue.prototype.$auth.getAccessToken();
+    const accessToken = await Vue.prototype.$auth.getSessionToken();
     return client({
       method,
       url: resource,

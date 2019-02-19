@@ -65,25 +65,32 @@
 import Vue from "vue";
 import apiSession from "@/api/SessionService";
 
+var config = {
+  isAuthenticated: false,
+  drawer: false,
+  items: [
+    { icon: "messages", text: "Messages", href: "/Messages" },
+    { icon: "map", text: "Map", href: "/Map" }
+  ]
+};
+
 export default {
   name: "app",
   data() {
-    return {
-      isAuthenticated: Vue.prototype.$auth.isAuthenticated(),
-      drawer: Vue.prototype.$auth.isAuthenticated(),
-      items: [
-        { icon: "messages", text: "Messages", href: "/Messages" },
-        { icon: "map", text: "Map", href: "/Map" }
-      ]
-    };
+    config.isAuthenticated = Vue.prototype.$auth.isAuthenticated();
+    config.drawer = Vue.prototype.$auth.isAuthenticated();
+    return config;
+  },
+  reload: function() {
+    config.isAuthenticated = Vue.prototype.$auth.isAuthenticated();
+    config.drawer = Vue.prototype.$auth.isAuthenticated();
   },
   methods: {
-    login() {},
     async logout() {
-      await Vue.prototype.$auth.getAccessToken().then(function(token) {
+      await Vue.prototype.$auth.getSessionToken().then(function(token) {
         apiSession.delete(token);
       });
-      Vue.prototype.$auth.setAccessToken("");
+      Vue.prototype.$auth.endSession();
       this.$router.go("/SignIn");
     }
   }

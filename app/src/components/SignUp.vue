@@ -79,8 +79,8 @@ export default {
         return;
       }
 
-      //await api.create(this.model);
-      this.$router.go("/Messages");
+      await api.create(this.model);
+      this.$router.push("SignIn");
     }
   }
 };

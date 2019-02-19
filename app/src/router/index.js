@@ -61,7 +61,7 @@ const onAuthRequired = async (from, to, next) => {
       path: '/'
     });
   } else {
-    next()
+    next()   
   }
 }
 
