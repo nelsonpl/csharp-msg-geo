@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "geomsg.api", "geomsg.api\geomsg.api.csproj", "{298F2ED6-8595-460E-AB90-18B91F3409E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api", "geomsg.api\api.csproj", "{298F2ED6-8595-460E-AB90-18B91F3409E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core", "core\core.csproj", "{C3F6C708-D059-4123-8ADD-6FD3ABF3A2F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{298F2ED6-8595-460E-AB90-18B91F3409E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{298F2ED6-8595-460E-AB90-18B91F3409E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{298F2ED6-8595-460E-AB90-18B91F3409E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3F6C708-D059-4123-8ADD-6FD3ABF3A2F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3F6C708-D059-4123-8ADD-6FD3ABF3A2F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3F6C708-D059-4123-8ADD-6FD3ABF3A2F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3F6C708-D059-4123-8ADD-6FD3ABF3A2F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

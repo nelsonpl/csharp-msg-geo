@@ -1,5 +1,7 @@
-﻿using Npx.Geomsg.Api.DataAccess;
-using Npx.Geomsg.Api.Models;
+﻿using Npx.Geomsg.Api.Core;
+using Npx.Geomsg.Api.Core.DataAccess;
+using Npx.Geomsg.Core.Business;
+using Npx.Geomsg.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -14,19 +16,19 @@ namespace Npx.Geomsg.Api.Controllers
 {
 	public class MessageController : ApiController
 	{
-		private GeoMsgContext db = new GeoMsgContext();
+		private MessageBus _bus = new MessageBus();
 
 		// GET: api/Messages
-		public IQueryable<Message> GetMessage()
+		public IEnumerable<Message> Get()
 		{
-			return db.Message.OrderByDescending(x => x.DateCreate);
+			return _bus.Get();
 		}
 
 		// GET: api/Messages/5
 		[ResponseType(typeof(Message))]
 		public IHttpActionResult Get(int id)
 		{
-			Message message = db.Message.Find(id);
+			Message message = _bus.Get(id);
 			if (message == null)
 			{
 				return NotFound();
@@ -37,35 +39,14 @@ namespace Npx.Geomsg.Api.Controllers
 
 		// PUT: api/Messages/5
 		[ResponseType(typeof(void))]
-		public IHttpActionResult Put(int id, Message message)
+		public IHttpActionResult Put(Message message)
 		{
 			if (!ModelState.IsValid)
 			{
 				return BadRequest(ModelState);
 			}
 
-			if (id != message.ID)
-			{
-				return BadRequest();
-			}
-
-			db.Entry(message).State = EntityState.Modified;
-
-			try
-			{
-				db.SaveChanges();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!MessageExists(id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
+			_bus.Update(message);
 
 			return StatusCode(HttpStatusCode.NoContent);
 		}
@@ -79,41 +60,27 @@ namespace Npx.Geomsg.Api.Controllers
 				return BadRequest(ModelState);
 			}
 
-			message.DateCreate = DateTime.Now;
-			db.Message.Add(message);
-			db.SaveChanges();
+			var id = _bus.Create(message);
 
-			return CreatedAtRoute("DefaultApi", new { id = message.ID }, message);
+			return CreatedAtRoute("DefaultApi", new { id = id }, message);
 		}
 
 		// DELETE: api/Messages/5
 		[ResponseType(typeof(Message))]
 		public IHttpActionResult Delete(int id)
 		{
-			Message message = db.Message.Find(id);
-			if (message == null)
-			{
-				return NotFound();
-			}
+			_bus.Delete(id);
 
-			db.Message.Remove(message);
-			db.SaveChanges();
-
-			return Ok(message);
+			return StatusCode(HttpStatusCode.NoContent);
 		}
 
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
-				db.Dispose();
+				_bus.Dispose();
 			}
 			base.Dispose(disposing);
-		}
-
-		private bool MessageExists(int id)
-		{
-			return db.Message.Count(e => e.ID == id) > 0;
 		}
 	}
 }

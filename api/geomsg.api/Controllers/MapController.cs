@@ -1,5 +1,7 @@
-﻿using Npx.Geomsg.Api.DataAccess;
-using Npx.Geomsg.Api.Models;
+﻿using Npx.Geomsg.Api.Core;
+using Npx.Geomsg.Api.Core.DataAccess;
+using Npx.Geomsg.Core.Business;
+using Npx.Geomsg.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,13 +17,13 @@ namespace Npx.Geomsg.Api.Controllers
 {
 	public class MapController : ApiController
 	{
-		private GeoMsgContext db = new GeoMsgContext();
+		private MessageBus _bus = new MessageBus();
 
 		public Map Get(double west, double east, double south, double north)
 		{
 			Map viewModel = new Map { Type = "FeatureCollection" };
 
-			var list = db.Message.ToList();
+			var list = _bus.Get();
 
 			viewModel.Features = list
 				.Where(x => x.Longitude >= west && x.Longitude <= east && x.Latitude >= south && x.Latitude <= north)
@@ -88,7 +90,7 @@ namespace Npx.Geomsg.Api.Controllers
 		{
 			if (disposing)
 			{
-				db.Dispose();
+				_bus.Dispose();
 			}
 			base.Dispose(disposing);
 		}

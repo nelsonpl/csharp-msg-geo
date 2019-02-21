@@ -1,6 +1,7 @@
-﻿using Npx.Geomsg.Api.DataAccess;
-using Npx.Geomsg.Api.Models;
-using Npx.Geomsg.Api.Security;
+﻿using Npx.Geomsg.Api.Core;
+using Npx.Geomsg.Api.Core.DataAccess;
+using Npx.Geomsg.Core.Business;
+using Npx.Geomsg.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,15 @@ namespace Npx.Geomsg.Api.Controllers
 {
 	public class SessionController : ApiController
 	{
-		private GeoMsgContext db = new GeoMsgContext();
+
+		private UserSessionBus _bus = new UserSessionBus();
+
+		[HttpPost]
+		[AllowAnonymous]
+		public string Post(User user)
+		{
+			return _bus.Create(user.Email, user.Password);
+		}
 
 		/// <summary>
 		/// Deletes a specific TodoItem.
@@ -21,20 +30,14 @@ namespace Npx.Geomsg.Api.Controllers
 		[AllowAnonymous]
 		public void Delete(string token)
 		{
-			var sessionDb = db.UserSession.SingleOrDefault(x => x.Token.Equals(token));
-
-			if(sessionDb != null)
-			{
-				db.UserSession.Remove(sessionDb);
-				db.SaveChanges();
-			}
+			_bus.Delete(token);
 		}
 
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
-				db.Dispose();
+				_bus.Dispose();
 			}
 			base.Dispose(disposing);
 		}

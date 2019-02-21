@@ -8,3 +8,6 @@
 /app/.babelrc
 /app/.postcssrc.js
 /app/.vscode
+/api/core/obj
+/api/core/bin
+/api/geomsg.api/api.csproj.user

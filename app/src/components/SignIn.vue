@@ -40,7 +40,7 @@ export default {
   created: function() {},
   methods: {
     async signin() {
-      var token = await api.get(this.model.email, this.model.password);
+      var token = await api.post(this.model.email, this.model.password);
       if (token) {
         Vue.prototype.$auth.startSession(token);
         apiMaster.reload();

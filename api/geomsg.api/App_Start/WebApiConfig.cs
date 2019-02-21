@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json.Serialization;
-using Npx.Geomsg.Api.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Npx.Geomsg.Api.Components;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
