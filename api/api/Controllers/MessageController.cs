@@ -2,6 +2,7 @@
 using Npx.Geomsg.Core.Models;
 using System.Collections.Generic;
 using System.Net;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -30,20 +31,6 @@ namespace Npx.Geomsg.Api.Controllers
 			return Ok(message);
 		}
 
-		// PUT: api/Messages/5
-		[ResponseType(typeof(void))]
-		public IHttpActionResult Put(Message message)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
-			_bus.Update(message);
-
-			return StatusCode(HttpStatusCode.NoContent);
-		}
-
 		// POST: api/Messages
 		[ResponseType(typeof(Message))]
 		public IHttpActionResult Post(Message message)
@@ -53,18 +40,13 @@ namespace Npx.Geomsg.Api.Controllers
 				return BadRequest(ModelState);
 			}
 
+			var user = HttpContext.Current.User as SessionPrincipal;
+
+			message.ID = user.SessionIdentity.Id;
+
 			var id = _bus.Create(message);
 
 			return CreatedAtRoute("DefaultApi", new { id = id }, message);
-		}
-
-		// DELETE: api/Messages/5
-		[ResponseType(typeof(Message))]
-		public IHttpActionResult Delete(int id)
-		{
-			_bus.Delete(id);
-
-			return StatusCode(HttpStatusCode.NoContent);
 		}
 
 		protected override void Dispose(bool disposing)

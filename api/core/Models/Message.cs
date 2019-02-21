@@ -13,7 +13,8 @@ namespace Npx.Geomsg.Core.Models
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
 		public DateTime DateCreate { get; set; }
-		public string UserId { get; set; }
+		public int UserId { get; set; }
+		public virtual User User { get; set; }
 
 	}
 }
