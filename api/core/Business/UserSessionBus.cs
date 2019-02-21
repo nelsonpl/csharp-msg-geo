@@ -39,6 +39,11 @@ namespace Npx.Geomsg.Core.Business
 
 		public string Create(string email, string password)
 		{
+			if (String.IsNullOrWhiteSpace(email) || String.IsNullOrWhiteSpace(password))
+			{
+				new Exception("Email or password incorrect.");
+			}
+
 			var emailLower = email.ToLower().Trim();
 			var user = db.User.SingleOrDefault(x => x.Email.Equals(emailLower));
 

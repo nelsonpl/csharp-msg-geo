@@ -11,3 +11,6 @@
 /api/core/obj
 /api/core/bin
 /api/geomsg.api/api.csproj.user
+/api/api/api.csproj.user
+/api/api/bin
+/api/api/obj
