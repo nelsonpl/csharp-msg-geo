@@ -157,7 +157,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\AuthorizationAttribute.cs" />
     <Compile Include="Components\SessionLoaderMessageHandler.cs" />
-    <Compile Include="ViewModels\SessionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

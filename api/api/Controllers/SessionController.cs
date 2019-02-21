@@ -1,6 +1,5 @@
 ﻿using Npx.Geomsg.Api.Core;
 using Npx.Geomsg.Api.Core.DataAccess;
-using Npx.Geomsg.Api.ViewModels;
 using Npx.Geomsg.Core.Business;
 using Npx.Geomsg.Core.Models;
 using System;
@@ -19,7 +18,7 @@ namespace Npx.Geomsg.Api.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
-		public string Post(SessionViewModel user)
+		public string Post(User user)
 		{
 			return _bus.Create(user.Email, user.Password);
 		}
