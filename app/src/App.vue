@@ -26,14 +26,6 @@
           <v-toolbar-side-icon v-show="isAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
           <span class="hidden-sm-and-down">GeoMSG</span>
         </v-toolbar-title>
-        <v-text-field
-          flat
-          v-show="isAuthenticated"
-          solo-inverted
-          prepend-icon="search"
-          label="Search"
-          class="hidden-sm-and-down"
-        ></v-text-field>
         <v-spacer></v-spacer>
         <v-btn href="/signup" v-show="!isAuthenticated" color="success">Sign up</v-btn>
         <v-btn href="/signin" v-show="!isAuthenticated" color="info">Sign in</v-btn>
