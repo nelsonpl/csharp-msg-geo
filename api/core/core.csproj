@@ -51,6 +51,7 @@
     <Compile Include="Business\UserSessionBus.cs" />
     <Compile Include="Business\AccountBus.cs" />
     <Compile Include="DataAccess\GeoMsgContext.cs" />
+    <Compile Include="Dto\MessageDto.cs" />
     <Compile Include="Models\Map.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\SessionIdentity.cs" />

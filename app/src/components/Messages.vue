@@ -14,7 +14,7 @@
               <v-card-text class="headline font-weight-bold">{{item.msg}}</v-card-text>
 
               <v-card-actions>
-                <span class="gray--text">{{item.User.Name}}</span>
+                <span class="gray--text">{{item.userName}}</span>
                 <v-spacer></v-spacer>
                 <v-list-tile>
                   <v-layout>

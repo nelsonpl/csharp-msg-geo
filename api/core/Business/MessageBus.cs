@@ -1,4 +1,5 @@
 ﻿using Npx.Geomsg.Api.Core.DataAccess;
+using Npx.Geomsg.Core.Dto;
 using Npx.Geomsg.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -14,43 +15,55 @@ namespace Npx.Geomsg.Core.Business
 	{
 		private GeoMsgContext db = new GeoMsgContext();
 
-		public IEnumerable<Message> Get()
+		public IEnumerable<MessageDto> Get()
 		{
-			return db.Message.OrderByDescending(x => x.DateCreate).ToList();
+			return db.Message.OrderByDescending(x => x.DateCreate).ToList().Select(Convert);
 		}
 
-		public Message Get(int id)
+		public MessageDto Get(int id)
 		{
 			Message message = db.Message.Find(id);
-			return message;
+			return Convert(message);
 		}
 
-		public void Update(Message message)
-		{
-			db.Entry(message).State = EntityState.Modified;
-			db.SaveChanges();
-		}
-
-		public int Create(Message message)
+		public int Create(MessageDto message)
 		{
 			message.DateCreate = DateTime.Now;
-			db.Message.Add(message);
+			db.Message.Add(Convert(message));
 			var id = db.SaveChanges();
 
 			return id;
 		}
 
-		public void Delete(int id)
+		private MessageDto Convert(Message message)
 		{
-			Message message = db.Message.Find(id);
-
-			if (message == null)
+			var dto = new MessageDto
 			{
-				return;
-			}
+				ID = message.ID,
+				Msg = message.Msg,
+				Type = message.Type,
+				Latitude = message.Latitude,
+				Longitude = message.Longitude,
+				DateCreate = message.DateCreate,
+				UserId = message.UserId,
+				UserName = message.User.Name
+			};
+			return dto;
+		}
 
-			db.Message.Remove(message);
-			db.SaveChanges();
+		private Message Convert(MessageDto message)
+		{
+			var dto = new Message
+			{
+				ID = message.ID,
+				Msg = message.Msg,
+				Type = message.Type,
+				Latitude = message.Latitude,
+				Longitude = message.Longitude,
+				DateCreate = message.DateCreate,
+				UserId = message.UserId
+			};
+			return dto;
 		}
 
 		public void Dispose()

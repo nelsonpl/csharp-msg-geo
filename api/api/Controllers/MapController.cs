@@ -1,4 +1,5 @@
 ﻿using Npx.Geomsg.Core.Business;
+using Npx.Geomsg.Core.Dto;
 using Npx.Geomsg.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Npx.Geomsg.Api.Controllers
 		}
 
 
-		private Map.Feature BuildFeature(Message message)
+		private Map.Feature BuildFeature(MessageDto message)
 		{
 			return new Map.Feature
 			{

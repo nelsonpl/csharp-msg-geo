@@ -1,4 +1,5 @@
 ﻿using Npx.Geomsg.Core.Business;
+using Npx.Geomsg.Core.Dto;
 using Npx.Geomsg.Core.Models;
 using System.Collections.Generic;
 using System.Net;
@@ -13,16 +14,16 @@ namespace Npx.Geomsg.Api.Controllers
 		private MessageBus _bus = new MessageBus();
 
 		// GET: api/Messages
-		public IEnumerable<Message> Get()
+		public IEnumerable<MessageDto> Get()
 		{
 			return _bus.Get();
 		}
 
 		// GET: api/Messages/5
-		[ResponseType(typeof(Message))]
+		[ResponseType(typeof(MessageDto))]
 		public IHttpActionResult Get(int id)
 		{
-			Message message = _bus.Get(id);
+			MessageDto message = _bus.Get(id);
 			if (message == null)
 			{
 				return NotFound();
@@ -32,8 +33,8 @@ namespace Npx.Geomsg.Api.Controllers
 		}
 
 		// POST: api/Messages
-		[ResponseType(typeof(Message))]
-		public IHttpActionResult Post(Message message)
+		[ResponseType(typeof(MessageDto))]
+		public IHttpActionResult Post(MessageDto message)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -42,7 +43,7 @@ namespace Npx.Geomsg.Api.Controllers
 
 			var user = HttpContext.Current.User as SessionPrincipal;
 
-			message.ID = user.SessionIdentity.Id;
+			message.UserId = user.SessionIdentity.Id;
 
 			var id = _bus.Create(message);
 
