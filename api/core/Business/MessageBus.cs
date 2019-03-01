@@ -15,9 +15,12 @@ namespace Npx.Geomsg.Core.Business
 	{
 		private GeoMsgContext db = new GeoMsgContext();
 
-		public IEnumerable<MessageDto> Get()
+		public IEnumerable<MessageDto> Get(string search = null)
 		{
-			return db.Message.OrderByDescending(x => x.DateCreate).ToList().Select(Convert);
+			if (string.IsNullOrWhiteSpace(search))
+				return db.Message.OrderByDescending(x => x.DateCreate).ToList().Select(Convert);
+			else
+				return db.Message.Where(x => x.Msg.Trim().ToLower().Contains(search.Trim().ToLower())).OrderByDescending(x => x.DateCreate).ToList().Select(Convert);
 		}
 
 		public MessageDto Get(int id)

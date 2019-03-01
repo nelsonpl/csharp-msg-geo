@@ -14,9 +14,9 @@ namespace Npx.Geomsg.Api.Controllers
 		private MessageBus _bus = new MessageBus();
 
 		// GET: api/Messages
-		public IEnumerable<MessageDto> Get()
+		public IEnumerable<MessageDto> Get(string search)
 		{
-			return _bus.Get();
+			return _bus.Get(search);
 		}
 
 		// GET: api/Messages/5
