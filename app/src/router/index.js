@@ -7,6 +7,7 @@ import Map from '@/components/Map'
 import Messages from '@/components/Messages'
 import SignUp from '@/components/SignUp'
 import SignIn from '@/components/SignIn'
+import PasswordChange from '@/components/PasswordChange'
 
 Vue.use(Router)
 
@@ -42,6 +43,14 @@ let router = new Router({
     path: '/Messages',
     name: 'Messages',
     component: Messages,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/PasswordChange',
+    name: 'PasswordChange',
+    component: PasswordChange,
     meta: {
       requiresAuth: true
     }

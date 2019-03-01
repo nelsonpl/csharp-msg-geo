@@ -147,6 +147,7 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\PasswordController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\MapController.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\AuthorizationAttribute.cs" />
     <Compile Include="Components\SessionLoaderMessageHandler.cs" />
+    <Compile Include="ViewModels\PasswordChange.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

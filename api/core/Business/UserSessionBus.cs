@@ -37,11 +37,18 @@ namespace Npx.Geomsg.Core.Business
 			return principal;
 		}
 
+		public void DeleteByUserId(int userId)
+		{
+			var list = db.UserSession.Where(x => x.UserId.Equals(userId));
+			db.UserSession.RemoveRange(list);
+
+		}
+
 		public string Create(string email, string password)
 		{
 			if (String.IsNullOrWhiteSpace(email) || String.IsNullOrWhiteSpace(password))
 			{
-				new Exception("Email or password incorrect.");
+				throw new Exception("Email or password incorrect.");
 			}
 
 			var emailLower = email.ToLower().Trim();
@@ -49,14 +56,14 @@ namespace Npx.Geomsg.Core.Business
 
 			if (user == null)
 			{
-				new Exception("Email or password incorrect.");
+				throw new Exception("Email or password incorrect.");
 			}
 
-			var passwordCrypt = Crypt.Encrypt(user.Email + "*" + user.Password);
+			var passwordCrypt = Crypt.Encrypt(user.Email + "*" + password);
 
 			if (!user.Password.Equals(passwordCrypt))
 			{
-				new Exception("Email or password incorrect.");
+				throw new Exception("Email or password incorrect.");
 			}
 
 			var session = new UserSession

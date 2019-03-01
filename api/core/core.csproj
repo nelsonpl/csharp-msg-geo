@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\PasswordBus.cs" />
     <Compile Include="Business\MessageBus.cs" />
     <Compile Include="Business\UserSessionBus.cs" />
     <Compile Include="Business\AccountBus.cs" />

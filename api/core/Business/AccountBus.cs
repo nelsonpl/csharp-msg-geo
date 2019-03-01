@@ -20,7 +20,7 @@ namespace Npx.Geomsg.Core.Business
 				throw new Exception("Incorrect username or password.");
 			}
 
-			if (user.Password.Length <= 8)
+			if (user.Password.Length < 8)
 			{
 				throw new Exception("Min 8 characters.");
 			}

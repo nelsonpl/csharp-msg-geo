@@ -30,10 +30,6 @@
         <v-btn href="/signup" v-show="!isAuthenticated" color="success">Sign up</v-btn>
         <v-btn href="/signin" v-show="!isAuthenticated" color="info">Sign in</v-btn>
         <div v-show="isAuthenticated">
-          <v-btn icon>
-            <v-icon>settings</v-icon>
-          </v-btn>
-
           <v-menu offset-y>
             <v-btn slot="activator" icon>
               <v-icon>person</v-icon>
@@ -41,6 +37,9 @@
             <v-list>
               <v-list-tile @click.prevent="logout()">
                 <v-list-tile-title>Logout</v-list-tile-title>
+              </v-list-tile>
+              <v-list-tile href="/PasswordChange">
+                <v-list-tile-title>Change Password</v-list-tile-title>
               </v-list-tile>
             </v-list>
           </v-menu>
