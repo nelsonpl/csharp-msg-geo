@@ -72,6 +72,7 @@
 
 <script>
 import api from "@/api/MessageService";
+import apiMaster from "@/App";
 
 var message = {
   msg: "",
@@ -91,11 +92,15 @@ export default {
   },
   async created() {
     this.get();
+    var that = this;
+    apiMaster.configSearch(async function(value) {
+      that.list = await api.get(value);
+    });
   },
   methods: {
     async get() {
       try {
-        this.list = await api.get();
+        this.list = await api.get('');
       } finally {
       }
     },

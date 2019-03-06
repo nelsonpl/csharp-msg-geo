@@ -7,12 +7,13 @@ const client = axios.create({
 })
 
 export default {
-  async execute(method, resource, data) {
+  async execute(method, resource, data, params) {
     const accessToken = await Vue.prototype.$auth.getSessionToken();
     return client({
       method,
       url: resource,
       data,
+      params,
       headers: {
         Authorization: `${accessToken}`
       }
@@ -20,8 +21,8 @@ export default {
       return req.data
     })
   },
-  get() {
-    return this.execute('get', '/').catch(function (error) {
+  get(searchText) {
+    return this.execute('get', '/', null, {search: searchText}).catch(function (error) {
       alert(error.message);
     });
   },
