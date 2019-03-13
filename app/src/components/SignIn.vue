@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import api from "@/api/SessionService";
 import apiMaster from "@/App";
 import Vue from "vue";
+import firebase from "firebase";
 
 export default {
   name: "signin",
@@ -37,15 +37,25 @@ export default {
       model: { email: "", password: "" }
     };
   },
-  created: function() {},
+  created: function() {
+    apiMaster.reload();
+  },
   methods: {
     async signin() {
-      var token = await api.post(this.model.email, this.model.password);
-      if (token) {
-        Vue.prototype.$auth.startSession(token);
-        apiMaster.reload();
-        this.$router.push("Messages");
-      }
+      var router = this.$router;
+
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.model.email, this.model.password)
+        .then(
+          function(user) {
+            apiMaster.reload();
+            router.push("Messages");
+          },
+          function(err) {
+            alert("Oops. " + err.message);
+          }
+        );
     }
   }
 };

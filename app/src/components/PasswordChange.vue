@@ -70,11 +70,7 @@ export default {
       }
 
       await api.put(this.model);
-
-      await Vue.prototype.$auth.getSessionToken().then(function(token) {
-        apiSession.delete(token);
-      });
-      Vue.prototype.$auth.endSession();
+    
       apiMaster.reload();
       this.$router.push("SignIn");
     }

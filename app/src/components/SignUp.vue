@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import api from "@/api/AccountService";
+import firebase from "firebase";
 
 export default {
   name: "signup",
@@ -68,19 +68,34 @@ export default {
   async created() {},
   methods: {
     async signup() {
-
-      if(!this.model.email || !this.model.name || !this.model.password || !this.model.confirmPassword){
+      if (
+        !this.model.email ||
+        !this.model.name ||
+        !this.model.password ||
+        !this.model.confirmPassword
+      ) {
         alert("Enter the required fields.");
         return;
       }
 
-      if(this.model.password != this.model.confirmPassword){
+      if (this.model.password != this.model.confirmPassword) {
         alert("The password you entered don't match.");
         return;
       }
 
-      await api.create(this.model);
-      this.$router.push("SignIn");
+      var router = this.$router;
+
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.model.email, this.model.password)
+        .then(
+          function(user) {
+            router.push("SignIn");
+          },
+          function(err) {
+            alert('Oops. ' + err.message);
+          }
+        );
     }
   }
 };

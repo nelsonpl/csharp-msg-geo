@@ -8,7 +8,7 @@ const client = axios.create({
 
 export default {
   async execute(method, resource, data, params) {
-    const accessToken = await Vue.prototype.$auth.getSessionToken();
+    const accessToken = '';
     return client({
       method,
       url: resource,
@@ -22,19 +22,15 @@ export default {
     })
   },
   get(searchText) {
-    return this.execute('get', '/', null, {search: searchText}).catch(function (error) {
-      alert(error.message);
-    });
+    return {};
   },
   create(data) {
-    return this.execute('post', '/', data).catch(function (error) {
-      alert(error.message);
-    });
+    return {};
   },
   update(id, data) {
-    return this.execute('put', `/${id}`, data)
+    return {};
   },
   delete(id) {
-    return this.execute('delete', `/${id}`)
+    return {};
   }
 }

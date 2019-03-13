@@ -10,7 +10,7 @@
       >
         <v-list dense>
           <template v-for="item in items">
-            <v-list-tile :href="item.href" :key="item.text">
+            <v-list-tile :to="item.href" :key="item.text">
               <v-list-tile-action>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-list-tile-action>
@@ -28,8 +28,8 @@
         </v-toolbar-title>
         <v-text-field :append-icon="'search'" @click:append="search()" v-model="searchValue" flat solo-inverted hide-details prepend-inner-icon="search" label="Search" class="hidden-sm-and-down" v-show="isSearch" ></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn href="/signup" v-show="!isAuthenticated" color="success">Sign up</v-btn>
-        <v-btn href="/signin" v-show="!isAuthenticated" color="info">Sign in</v-btn>
+        <v-btn to="signup" v-show="!isAuthenticated" color="success">Sign up</v-btn>
+        <v-btn to="signin" v-show="!isAuthenticated" color="info">Sign in</v-btn>
         <div v-show="isAuthenticated">
           <v-menu offset-y>
             <v-btn slot="activator" icon>
@@ -56,6 +56,7 @@
 <script>
 import Vue from "vue";
 import apiSession from "@/api/SessionService";
+import firebase from 'firebase';
 
 var fncSearch = function(value){};
 
@@ -73,13 +74,15 @@ var config = {
 export default {
   name: "app",
   data() {
-    config.isAuthenticated = Vue.prototype.$auth.isAuthenticated();
-    config.drawer = Vue.prototype.$auth.isAuthenticated();
+    config.isAuthenticated = firebase.auth().currentUser != null;
+    config.drawer = firebase.auth().currentUser != null;
+    config.isSearch = false;
     return config;
   },
   reload: function() {
-    config.isAuthenticated = Vue.prototype.$auth.isAuthenticated();
-    config.drawer = Vue.prototype.$auth.isAuthenticated();
+    config.isAuthenticated = firebase.auth().currentUser != null;
+    config.drawer = firebase.auth().currentUser != null;
+    config.isSearch = false;
   },
   configSearch(fnc) {
     config.isSearch = true;
@@ -87,11 +90,11 @@ export default {
   },
   methods: {
     async logout() {
-      await Vue.prototype.$auth.getSessionToken().then(function(token) {
-        apiSession.delete(token);
+      var router = this.$router;
+      firebase.auth().signOut().then(()=>{
+        router.push("SignIn");
       });
-      Vue.prototype.$auth.endSession();
-      this.$router.go("/SignIn");
+      
     },
     search(){
       fncSearch(config.searchValue);
