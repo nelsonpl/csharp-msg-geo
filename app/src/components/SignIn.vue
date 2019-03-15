@@ -2,7 +2,7 @@
   <div class="signin">
     <v-container grid-list-xl text-xs-center>
       <v-layout row wrap>
-        <v-flex xs5 offset-xs4>
+        <v-flex xs4 offset-xs4>
           <v-card class="elevation-12">
             <v-toolbar dark color="primary">
               <v-toolbar-title>Sign In</v-toolbar-title>
@@ -22,7 +22,7 @@
       </v-layout>
 
       <v-layout row wrap>
-        <v-flex xs5 offset-xs4>
+        <v-flex xs4 offset-xs4>
           <v-card class="elevation-12">
             <v-card-text>
               <v-btn color="primary" round @click="signinGoogle()">Google</v-btn>
