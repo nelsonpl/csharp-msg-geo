@@ -53,3 +53,24 @@ new Vue({
     App
   }
 });
+
+// Signs-out of Friendly Chat.
+function signOut() {
+  // Sign out of Firebase.
+  firebase.auth().signOut();
+}
+
+// Returns the signed-in user's profile Pic URL.
+function getProfilePicUrl() {
+  return firebase.auth().currentUser.photoURL || '/images/profile_placeholder.png';
+}
+
+// Returns the signed-in user's display name.
+function getUserName() {
+  return firebase.auth().currentUser.displayName;
+}
+
+// Returns true if a user is signed-in.
+function isUserSignedIn() {
+  return !!firebase.auth().currentUser;
+}
