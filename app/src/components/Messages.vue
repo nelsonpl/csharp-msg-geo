@@ -8,7 +8,7 @@
               <v-card-title>
                 <span class="gray--text">{{item.properties.type}}</span>
                 <v-spacer></v-spacer>
-                <span class="gray--text">{{item.properties.timestamp.toDate().toLocaleDateString()}}</span>
+                <span class="gray--text">{{item.properties.datetime}}</span>
               </v-card-title>
 
               <v-card-text class="headline font-weight-bold">{{item.properties.text}}</v-card-text>
@@ -101,6 +101,8 @@ export default {
     async get() {
       var that = this;
       api.get((message)=>{
+        if(message.properties.timestamp)
+          message.properties.datetime = message.properties.timestamp.toDate().toLocaleDateString();
         that.list.push(message);
       });
     },
