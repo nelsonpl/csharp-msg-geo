@@ -66,7 +66,8 @@ var config = {
   drawer: false,
   items: [
     { icon: "messages", text: "Messages", href: "/Messages" },
-    { icon: "map", text: "Map", href: "/Map" }
+    { icon: "map", text: "Map", href: "/Map" },
+    { icon: "favorite", text: "My Location", href: "/myLocation" },
   ]
 };
 
