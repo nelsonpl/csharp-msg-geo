@@ -58,9 +58,9 @@
 </template>
 
 <script>
+
 import Vue from "vue";
 import MapPopupContent from "./MapPopupContent";
-import api from "@/api/MapService";
 import apiMsg from "@/api/MessageService";
 
 var message = {
@@ -79,19 +79,21 @@ var config = {
   dialog: false,
   model: message,
   create: async function() {
-    await apiMsg.create(config.model);
+    await apiMsg.save(config.model);
     config.dialog = false;
-
-    config.messagesMarket.geojson = await api.get(
-      config.bounds.getWest(),
-      config.bounds.getEast(),
-      config.bounds.getSouth(),
-      config.bounds.getNorth()
-    );
+    config.messagesMarket.geojson = [];
+    apiMsg.get((message)=>{
+      config.messagesMarket.geojson.push(message);
+    });
+    // config.messagesMarket.geojson = await api.get(
+    //   config.bounds.getWest(),
+    //   config.bounds.getEast(),
+    //   config.bounds.getSouth(),
+    //   config.bounds.getNorth()
+    // );
   },
   addMsg: function(e) {
-    config.model.location =
-      "Latitude: " + e.latlng.lat + " - Longitude: " + e.latlng.lng;
+    config.model.location = "Latitude: " + e.latlng.lat + " - Longitude: " + e.latlng.lng;
     config.model.latitude = e.latlng.lat;
     config.model.longitude = e.latlng.lng;
     config.dialog = true;
@@ -101,7 +103,7 @@ var config = {
   },
 
   messagesMarket: {
-    geojson: null,
+    geojson: [],
     options: {
       filter: function(feature, layer) {
         if (feature.properties) {
@@ -121,12 +123,16 @@ var buildMarkers = async function(lat, lng, messagesMarket) {
   var northEast = L.latLng(lat + 0.025, lng + 0.025);
   config.center = L.latLng(lat, lng);
   config.bounds = L.latLngBounds(southWest, northEast);
-  config.messagesMarket.geojson = await api.get(
-    config.bounds.getWest(),
-    config.bounds.getEast(),
-    config.bounds.getSouth(),
-    config.bounds.getNorth()
-  );
+  config.messagesMarket.geojson = [];
+  apiMsg.get((message)=>{
+    config.messagesMarket.geojson.push(message);
+  });
+  // config.messagesMarket.geojson = await api.get(
+  //   config.bounds.getWest(),
+  //   config.bounds.getEast(),
+  //   config.bounds.getSouth(),
+  //   config.bounds.getNorth()
+  // );
 };
 
 var buildConfig = function() {
@@ -178,34 +184,41 @@ export default {
     }
   },
   methods: {
-    refresh: async function() {
-      config.messagesMarket.geojson = await api.get(
-        config.bounds.getWest(),
-        config.bounds.getEast(),
-        config.bounds.getSouth(),
-        config.bounds.getNorth()
-      );
+    refresh: function() {      
+      config.messagesMarket.geojson = [];
+      apiMsg.get((message)=>{
+        config.messagesMarket.geojson.push(message);
+      });
+      // config.messagesMarket.geojson = await api.get(
+      //   config.bounds.getWest(),
+      //   config.bounds.getEast(),
+      //   config.bounds.getSouth(),
+      //   config.bounds.getNorth()
+      // );
     }
   }
 };
+
 </script>
 
 <style>
-.leaflet-fake-icon-image-2x {
-  background-image: url(../../node_modules/leaflet/dist/images/marker-icon-2x.png);
-}
-.leaflet-fake-icon-shadow {
-  background-image: url(../../node_modules/leaflet/dist/images/marker-shadow.png);
-}
-@import "../../node_modules/leaflet/dist/leaflet.css";
 
-.divmap {
-  position: absolute;
-  overflow-x: auto;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  bottom: 0px;
-  z-index: 1;
-}
+.leaflet-fake-icon-image-2x {
+    background-image: url(../../node_modules/leaflet/dist/images/marker-icon-2x.png);
+  }
+  .leaflet-fake-icon-shadow {
+    background-image: url(../../node_modules/leaflet/dist/images/marker-shadow.png);
+  }
+  @import "../../node_modules/leaflet/dist/leaflet.css";
+  
+  .divmap {
+    position: absolute;
+    overflow-x: auto;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    z-index: 1;
+  }
+
 </style>

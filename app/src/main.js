@@ -1,11 +1,22 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-import router from './router'
-import Vuetify from 'vuetify'
+import Vue from 'vue';
+import App from './App';
+import router from './router';
+import Vuetify from 'vuetify';
+import firebase from 'firebase';
 
-import 'vuetify/dist/vuetify.min.css'
+import 'vuetify/dist/vuetify.min.css';
+
+// 
+const config = {
+  apiKey: "AIzaSyDRoJEKEFGwuX7nKQ9EX4Tm5lE4IEES9m4",
+  authDomain: "npx-mwg.firebaseapp.com",
+  databaseURL: "https://npx-mwg.firebaseio.com",
+  projectId: "npx-mwg",
+  storageBucket: "npx-mwg.appspot.com",
+  messagingSenderId: "422307222319"
+};
+
+firebase.initializeApp(config);
 
 Vue.use(Vuetify)
 
@@ -14,7 +25,7 @@ import {
   LTileLayer,
   LMarker,
   LGeoJson
-} from 'vue2-leaflet'
+} from 'vue2-leaflet';
 
 
 Vue.component('l-map', LMap);
@@ -23,34 +34,15 @@ Vue.component('l-marker', LMarker);
 Vue.component('l-geo-json', LGeoJson);
 
 // eslint-disable-next-line
-delete L.Icon.Default.prototype._getIconUrl
+delete L.Icon.Default.prototype._getIconUrl;
 // eslint-disable-next-line
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-})
+});
 
 Vue.config.productionTip = false;
-Vue.prototype.$auth = {
-
-  startSession: (token) => {
-    localStorage.npxgeomsgtoken = token;
-  },
-  getSessionToken: async () => {
-    if (localStorage.npxgeomsgtoken)
-      return localStorage.npxgeomsgtoken;
-    return "";
-  },
-  isAuthenticated: () => {
-    var flag = localStorage.npxgeomsgtoken != null && localStorage.npxgeomsgtoken != "";
-    return flag;
-  },
-  endSession: () => {
-    localStorage.npxgeomsgtoken = "";
-    localStorage.clear();
-  },
-};
 
 /* eslint-disable no-new */
 new Vue({
@@ -60,4 +52,4 @@ new Vue({
   components: {
     App
   }
-})
+});

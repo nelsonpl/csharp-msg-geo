@@ -6,15 +6,15 @@
           <v-flex xs12>
             <v-card>
               <v-card-title>
-                <span class="gray--text">{{item.type}}</span>
+                <span class="gray--text">{{item.properties.type}}</span>
                 <v-spacer></v-spacer>
-                <span class="gray--text">{{item.dateCreate}}</span>
+                <span class="gray--text">{{item.properties.datetime}}</span>
               </v-card-title>
 
-              <v-card-text class="headline font-weight-bold">{{item.msg}}</v-card-text>
+              <v-card-text class="headline font-weight-bold">{{item.properties.text}}</v-card-text>
 
               <v-card-actions>
-                <span class="gray--text">{{item.userName}}</span>
+                <span class="gray--text">{{item.properties.userName}}</span>
                 <v-spacer></v-spacer>
                 <v-list-tile>
                   <v-layout>
@@ -99,27 +99,26 @@ export default {
   },
   methods: {
     async get() {
-      try {
-        this.list = await api.get('');
-      } finally {
-      }
+      var that = this;
+      api.get((message)=>{
+        if(message.properties.timestamp)
+          message.properties.datetime = message.properties.timestamp.toDate().toLocaleDateString();
+        that.list.push(message);
+      });
     },
     async create() {
       try {
-        await api.create(this.model);
+        api.save(this.model).then(function(e) {alert('sucesso!');});
+        this.list = [];
         this.get();
         this.dialog = false;
+      } catch(e){
+        alert('error!');
       } finally {
       }
     },
     linkGoogleMaps(item) {
-      return (
-        "https://www.google.com/maps/@" +
-        item.latitude +
-        "," +
-        item.longitude +
-        ",15z"
-      );
+      return ("https://www.google.com/maps/@" + item.geometry.coordinates[1] + "," + item.geometry.coordinates[0] + ",15z");
     },
     getLocation() {
       message.location = "getting...";
@@ -128,30 +127,18 @@ export default {
           function(position) {
             message.latitude = position.coords.latitude;
             message.longitude = position.coords.longitude;
-            message.location =
-              "Latitude: " +
-              message.latitude +
-              " - Longitude: " +
-              message.longitude;
+            message.location = "Latitude: " + message.latitude + " - Longitude: " + message.longitude;
           },
           function(error) {
             message.latitude = -15.79522682;
             message.longitude = -47.8827095;
-            message.location =
-              "Latitude: " +
-              message.latitude +
-              " - Longitude: " +
-              message.longitude;
+            message.location = "Latitude: " + message.latitude + " - Longitude: " + message.longitude;
           }
         );
       } else {
         message.latitude = -15.79522682;
         message.longitude = -47.8827095;
-        message.location =
-          "Latitude: " +
-          message.latitude +
-          " - Longitude: " +
-          message.longitude;
+        message.location = "Latitude: " + message.latitude + " - Longitude: " + message.longitude;
       }
     }
   }

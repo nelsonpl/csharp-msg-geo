@@ -1,16 +1,10 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-navigation-drawer
-        v-show="isAuthenticated"
-        fixed
-        :clipped="$vuetify.breakpoint.mdAndUp"
-        app
-        v-model="drawer"
-      >
+      <v-navigation-drawer v-show="isAuthenticated" fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="drawer">
         <v-list dense>
           <template v-for="item in items">
-            <v-list-tile :href="item.href" :key="item.text">
+            <v-list-tile :to="item.href" :key="item.text">
               <v-list-tile-action>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-list-tile-action>
@@ -26,10 +20,10 @@
           <v-toolbar-side-icon v-show="isAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
           <span class="hidden-sm-and-down">GeoMSG</span>
         </v-toolbar-title>
-        <v-text-field :append-icon="'search'" @click:append="search()" v-model="searchValue" flat solo-inverted hide-details prepend-inner-icon="search" label="Search" class="hidden-sm-and-down" v-show="isSearch" ></v-text-field>
+        <v-text-field :append-icon="'search'" @click:append="search()" v-model="searchValue" flat solo-inverted hide-details prepend-inner-icon="search" label="Search" class="hidden-sm-and-down" v-show="isSearch"></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn href="/signup" v-show="!isAuthenticated" color="success">Sign up</v-btn>
-        <v-btn href="/signin" v-show="!isAuthenticated" color="info">Sign in</v-btn>
+        <v-btn to="signup" v-show="!isAuthenticated" color="success">Sign up</v-btn>
+        <v-btn to="signin" v-show="!isAuthenticated" color="info">Sign in</v-btn>
         <div v-show="isAuthenticated">
           <v-menu offset-y>
             <v-btn slot="activator" icon>
@@ -56,13 +50,19 @@
 <script>
 import Vue from "vue";
 import apiSession from "@/api/SessionService";
+import firebase from "firebase";
+import router from './router';
 
-var fncSearch = function(value){};
+function isUserSignedIn() {
+  return !!firebase.auth().currentUser;
+}
+
+var fncSearch = function(value) {};
 
 var config = {
   isAuthenticated: false,
   isSearch: false,
-  searchValue: '',
+  searchValue: "",
   drawer: false,
   items: [
     { icon: "messages", text: "Messages", href: "/Messages" },
@@ -73,13 +73,50 @@ var config = {
 export default {
   name: "app",
   data() {
-    config.isAuthenticated = Vue.prototype.$auth.isAuthenticated();
-    config.drawer = Vue.prototype.$auth.isAuthenticated();
+    config.isAuthenticated = isUserSignedIn();
+    config.drawer = isUserSignedIn();
+    config.isSearch = false;
     return config;
   },
-  reload: function() {
-    config.isAuthenticated = Vue.prototype.$auth.isAuthenticated();
-    config.drawer = Vue.prototype.$auth.isAuthenticated();
+  created: function() {
+    var authStateObserver = function(user) {
+      if (user) {
+        var profilePicUrl = firebase.auth().currentUser.photoURL || '/images/profile_placeholder.png';
+        var userName = firebase.auth().currentUser.displayName;
+
+        config.isAuthenticated = isUserSignedIn();
+        config.drawer = isUserSignedIn();
+        config.isSearch = false;
+
+        router.push("Messages");
+
+        // Set the user's profile pic and name.
+        // userPicElement.style.backgroundImage = "url(" + addSizeToGoogleProfilePic(profilePicUrl) + ")";
+        // userNameElement.textContent = userName;
+
+        // Show user's profile and sign-out button.
+        // userNameElement.removeAttribute("hidden");
+        // userPicElement.removeAttribute("hidden");
+        // signOutButtonElement.removeAttribute("hidden");
+
+        // Hide sign-in button.
+        // signInButtonElement.setAttribute("hidden", "true");
+
+        // We save the Firebase Messaging Device token and enable notifications.
+        // saveMessagingDeviceToken();
+      } else {
+        // User is signed out!
+        // Hide user's profile and sign-out button.
+        // userNameElement.setAttribute("hidden", "true");
+        // userPicElement.setAttribute("hidden", "true");
+        // signOutButtonElement.setAttribute("hidden", "true");
+
+        // Show sign-in button.
+        // signInButtonElement.removeAttribute("hidden");
+      }
+    };
+
+    firebase.auth().onAuthStateChanged(authStateObserver);
   },
   configSearch(fnc) {
     config.isSearch = true;
@@ -87,13 +124,18 @@ export default {
   },
   methods: {
     async logout() {
-      await Vue.prototype.$auth.getSessionToken().then(function(token) {
-        apiSession.delete(token);
-      });
-      Vue.prototype.$auth.endSession();
-      this.$router.go("/SignIn");
+      var router = this.$router;
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          config.isAuthenticated = false;
+          config.drawer = false;
+          config.isSearch = false;
+          router.push("SignIn");
+        });
     },
-    search(){
+    search() {
       fncSearch(config.searchValue);
     }
   }
