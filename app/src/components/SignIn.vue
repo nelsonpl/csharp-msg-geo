@@ -2,7 +2,7 @@
   <div class="signin">
     <v-container grid-list-xl text-xs-center>
       <v-layout row wrap>
-        <v-flex xs10 offset-xs1>
+        <v-flex xs4 offset-xs4>
           <v-card class="elevation-12">
             <v-toolbar dark color="primary">
               <v-toolbar-title>Sign In</v-toolbar-title>
@@ -15,20 +15,29 @@
               </v-form>
             </v-card-text>
             <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn @click="signin()">Sign in</v-btn>
+              <v-btn block color="success"  @click="signin()">Sign in</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
       </v-layout>
+
+      <v-layout row wrap>
+        <v-flex xs4 offset-xs4>
+          <v-card class="elevation-12">
+            <v-card-text>
+              <v-btn color="primary" round @click="signinGoogle()">Google</v-btn>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+
     </v-container>
   </div>
 </template>
 
 <script>
-import api from "@/api/SessionService";
-import apiMaster from "@/App";
 import Vue from "vue";
+import firebase from "firebase";
 
 export default {
   name: "signin",
@@ -39,13 +48,22 @@ export default {
   },
   created: function() {},
   methods: {
-    async signin() {
-      var token = await api.post(this.model.email, this.model.password);
-      if (token) {
-        Vue.prototype.$auth.startSession(token);
-        apiMaster.reload();
-        this.$router.push("Messages");
-      }
+    signin() {
+      var router = this.$router;
+
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.model.email, this.model.password)
+        .then(
+          function(user) { },
+          function(err) {
+            alert("Oops. " + err.message);
+          }
+        );
+    },
+    signinGoogle() {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider);
     }
   }
 };
